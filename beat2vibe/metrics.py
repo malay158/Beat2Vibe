@@ -1,4 +1,3 @@
-"""Per-query recommendation and supervised classification metrics."""
 import numpy as np
 from sklearn.metrics import accuracy_score,precision_recall_fscore_support,confusion_matrix
 from scipy.stats import wilcoxon
@@ -13,7 +12,7 @@ def classification(y_true,y_pred):
             'confusion_matrix':cm.tolist(),'class_names':list(CLASSES)}
 
 def ranking(relevance_sorted,ks=(5,10)):
-    """Relevance is 0/1 for a fixed sampled candidate set; at least one judged positive."""
+    """Relevance is 0/1 for a fixed sampled candidate set."""
     y=np.asarray(relevance_sorted,dtype=int)
     if not len(y) or not y.any(): raise ValueError('Ranking query has no known positive')
     out={}

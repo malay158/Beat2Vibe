@@ -1,4 +1,3 @@
-"""Beat2Vibe command line entrypoint. Run `python run.py --help`."""
 import argparse
 import json
 from pathlib import Path
@@ -44,7 +43,7 @@ def cli():
         print(json.dumps(evaluate_external(args.data,args.features,args.out,conf),indent=2))
     elif args.command=='extract-mert':
         if not args.allow_remote_code:
-            p.error('MERT uses custom model code; re-run with --allow-remote-code only after reviewing it')
+            p.error('MERT uses custom model code, re-run with --allow-remote-code only after reviewing it')
         from beat2vibe.baselines import extract_mert
         print(extract_mert(args.tracks,args.out,device=args.device))
     elif args.command=='tune':

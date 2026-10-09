@@ -1,4 +1,3 @@
-"""Audio features, annotation input, and leakage-aware track splits."""
 from pathlib import Path
 import json
 import warnings
@@ -29,12 +28,12 @@ def read_manifest(tracks_path, pairs_path):
         raise ValueError("Pair refers to an unknown track_id")
     if (pairs.current_id == pairs.candidate_id).any():
         raise ValueError("Self-transitions are not supported")
-    # Never infer labels from valence or tempo; only preserve annotated ground truth.
+    
     return tracks, pairs
 
 
 def split_track_disjoint(tracks, pairs, seed, train_fraction=0.85, validation_within_train=0.1):
-    """Partition tracks first; discard cross-partition pairs, avoiding track leakage."""
+    
     ids = tracks.track_id.astype(str).tolist()
     if len(ids) < 7:
         raise ValueError("Need at least seven tracks for train/val/test splits")
@@ -124,7 +123,7 @@ def prepare(tracks_path, pairs_path, out_dir, config):
 
 
 def rhythm_delta(r_i, r_j, eps=1e-6):
-    # Dimensions match Eq. (10): relative tempo; IBI mean/std; onset mean/std.
+    
     a = np.asarray(r_i, dtype=np.float64)
     b = np.asarray(r_j, dtype=np.float64)
     return np.array([(b[0]-a[0])/(max(float(a[0]), 1.0)),

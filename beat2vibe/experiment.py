@@ -1,4 +1,4 @@
-"""Run reproducible pretraining, supervised learning, evaluation, and ablations."""
+
 import json
 from pathlib import Path
 from collections import defaultdict
@@ -70,7 +70,7 @@ def compute_rhythm_stats(bank,pairs):
         classes.append(CLASS_TO_ID[row.transition])
     changes=np.asarray(changes,dtype=np.float32)
     scale=changes.std(0)+1e-4
-    # Avoid pathological 1/std explosions for nearly constant features.
+    
     scale=np.maximum(scale,0.01)
     norm=changes/scale
     mu=np.stack([norm[np.asarray(classes)==k].mean(0) if k in classes else np.zeros(5)
@@ -184,11 +184,7 @@ def evaluate_classification(model,bank,subset,device,return_rows=False):
 
 @torch.no_grad()
 def evaluate_ranking(model,bank,pairs,split,config,device,model_name='Beat2Vibe'):
-    """Sampled ranking: an annotated positive, with explicitly UNJUDGED sampled negatives.
-
-    This is not a held-out sequential listening log. It cannot independently validate
-    ground-truth relevance of the unjudged alternatives.
-    """
+    
     if isinstance(model,PairwiseBaseline):
         raise ValueError('Pairwise classifier has no trained ranking policy; use full/fixed Beat2Vibe')
     subset=pairs[pairs.split==split]
@@ -209,7 +205,7 @@ def evaluate_ranking(model,bank,pairs,split,config,device,model_name='Beat2Vibe'
         out=model.pair(model.track(fi),model.track(fj),ri,rj,fi[3],fj[3])
         target=CLASS_TO_ID[row.transition]
         scores=out['scores'][:,target]
-        # Policy is softmax(scores / temperature) over the SAME candidate set.
+        
         policy=F.softmax(scores/float(config['policy_temperature']),dim=0)
         order=torch.argsort(policy,descending=True).cpu().numpy().tolist()
         relevant=np.zeros(n,dtype=int); relevant[0]=1

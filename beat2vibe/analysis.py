@@ -1,4 +1,4 @@
-"""Paired statistical comparison and plotting directly from model-generated CSV files."""
+
 from pathlib import Path
 import json
 import numpy as np
@@ -8,7 +8,7 @@ from .metrics import paired_test
 def compare(file_a,file_b,out):
     a=pd.read_csv(file_a);b=pd.read_csv(file_b)
     def by_query(frame):
-        # Exactly one annotated positive per query is required for this sampled metric.
+        # Exactly one annotated positive per query is required.
         values={}
         for key,g in frame.groupby('query_id',sort=False):
             g=g.sort_values('rank')
@@ -34,7 +34,7 @@ def compare(file_a,file_b,out):
     return results
 
 def controller_plot(ranking_csv,out):
-    """Plot genuine learned weights from predictions, not hardcoded paper values."""
+    
     import matplotlib.pyplot as plt
     df=pd.read_csv(ranking_csv)
     required=['transition','weight_0','weight_1','weight_2']

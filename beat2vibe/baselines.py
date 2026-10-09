@@ -1,8 +1,3 @@
-"""Fair pair-classification and cosine baselines on externally extracted real embeddings.
-
-Use pretrained MERT and CLMR embeddings from their actual released weights. Never
-pretend a locally trained CNN is a pretrained MERT/CLMR checkpoint.
-"""
 import json
 from pathlib import Path
 import numpy as np
@@ -70,10 +65,8 @@ def evaluate_external(data_dir,embedding_file,prefix,config):
 
 
 def extract_mert(tracks_csv,output,model_id='m-a-p/MERT-v1-95M',device='cpu'):
-    """Optional genuine MERT features. Requires transformers and review of remote model code.
-
+    """
     MERT-v1-95M expects 24 kHz input, model supplies custom code.
-    Do not silently execute untrusted remote code without user's affirmative CLI flag.
     """
     import librosa
     import torch

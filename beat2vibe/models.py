@@ -1,4 +1,3 @@
-"""Neural architectures: SSL vibe projection, baseline, and adaptive Beat2Vibe scorer."""
 import torch
 from torch import nn
 import torch.nn.functional as F
